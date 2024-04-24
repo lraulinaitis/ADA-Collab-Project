@@ -1,0 +1,247 @@
+---
+title: "Bio 472: Lab 9"
+author: "Dr. Berry Brosi (professor), Kaysee Arrowsmith (TA)"
+date: "25 May 2022"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 4
+    toc_float: true
+    number_sections: false
+    theme: lumen
+---
+
+# Lab 9: Network Ecology in R
+
+Today, we will use the plant-pollinator data that we collected at the UW Medicinal Garden last week to get some experience with the types of network metrics and visualizations that we've discussed in lecture. Good news for us --- there's a handy R package just for ecological networks called `bipartite`. This package is specifically formulated for ecological networks with **two levels**, like plant-pollinator networks.
+
+## Loading packages and data
+
+You will likely need to install the package `bipartite` so I have that code commented out and you can remove that hashtag comment indicator to run that. We will also load a dataset of hummingbird-plant interactions that I will use throughout this lab to demonstrate how to use this package.
+
+```{r load, message=FALSE, warning=FALSE}
+# install.packages("bipartite")
+library(tidyverse)
+library(bipartite)
+
+hummingbird.comm <- read.csv("hummingbirdmatrix.csv", header = T) %>%
+  column_to_rownames("X")
+uw.comm <- read.csv("medgarden.csv", header = T) %>%
+  group_by(plant, pollinator) %>%
+  summarise(count = sum(count)) %>%
+  pivot_wider(names_from = "pollinator",
+              values_from = "count",
+              values_fill = 0) %>%
+  column_to_rownames("plant")
+```
+
+## Data Cleaning
+
+To use the functions in `bipartite`, your data needs to be in the format of a community data matrix. This is the same data format that we used to calculate diversity metrics previously, so if you need a refresher about how to turn data in this format, you can look at lab 3. For today's lab, you can copy the code that I used to import the Medicinal Garden data to convert it to a community data matrix.
+
+## Network Metrics
+
+There are tons of different metrics that we can use to describe what is going on in a network. We can use the `networklevel` function to calculate all of the network metrics that the `bipartite` package offers, but this is a pretty big computational task, so I recommend **not** running it on your own machines and just looking at the output on the .html report (here):
+
+```{r all the metrics}
+networklevel(hummingbird.comm)
+```
+
+So many numbers. I'm going to focus on just a couple of them today, but these are pretty widely used terms in network analysis so if you are interested in them, you can find quite a bit of literature using these terms. You can also type `?networklevel` into your Console and scroll down to the "Value" section. 
+
+<!-- * `connectance`: percent of the possible interactions that actually occur in the network, calculated as the number of cells with a value > 0 in the matrix divided by the total number of cells in the network (rows * columns). -->
+
+<!-- * `weightedNODF`: nestedness, or the extent to which more specialized species interact with a subset of more generalized species. A high nestedness value implies that there is a strong non-random structure to this network, while a low nestedness value implies that interactions are essentially randomly distributed. Because this is a weighted value, it accounts for the interaction strength (how many times does that interaction occur). -->
+
+<!-- * `robustness`: robustness of the network to removal of species, calculated in terms of removal of higher trophic level (HL) and lower trophic level (LL) species. This is calculated as the area under the curve, which means that a higher robustness value means a more gradual negative slope (removal of one species does not generally cause too many secondary extinctions), and a low robustness value means a steep negative slope (removal of one species generally causes many secondary extinctions). -->
+
+### Connectance
+
+Connectance is one of the simplest network metrics to understand. It calculates how many possible interactions actually occur. The most connected possible network would be one in which every species interacts with every other species, while the least connected network would be one in which no one interacts with anyone else (is that even a network then?).
+
+```{r connectance}
+networklevel(hummingbird.comm, index = "connectance")
+```
+
+What does a connectance level of 0.168 tell us? 16.8% of the possible interactions in this network actually occur. We can look at the math behind that number to see how it works as well
+
+```{r connectance manually}
+sum(hummingbird.comm > 0)/(nrow(hummingbird.comm)*ncol(hummingbird.comm))
+```
+
+Let's look at what this formula is doing. We're adding up how many interactions occur (have a number that's greater than 0 in the cell), and then dividing that number of actual interactions by the number of potential interactions (the total number of cells in this matrix).
+
+Resource: [Network structure and biodiversity loss in food webs:
+robustness increases with connectance](https://onlinelibrary.wiley.com/doi/pdf/10.1046/j.1461-0248.2002.00354.x)
+
+#### Your turn - connectance
+
+Please calculate connectance for your UW Medicinal Garden (`uw.comm`).
+
+```{r your turn connectance}
+
+```
+
+
+### Nestedness
+
+Another really useful network metric is nestedness. Nestedness is a metric of how well our data forms into subsets of larger groups. So for instance in this example network, we see a perfectly nested network. When we go down from the most connected bee species at the top to the least connected bee species at the bottom, we get perfect subsets of floral partners. Importantly, the most specialized pollinator at the bottom of the network only interacts with the most generalized plant, and conversely, the most specialized plant only interacts with the most generalized pollinator. This structure has important implications for network robustness and stability.
+
+![](nestedness.png)
+
+In `bipartite`, there are a couple of different metrics of nestedness. The one that I recommend is `weighted NODF`, which takes into account the weight of the interaction, or the number of times that we see that interaction occur in our network. Higher values indicate a more nested network.
+
+```{r nestedness}
+networklevel(hummingbird.comm, index = "weighted NODF")
+```
+
+Resource: [The ghost of nestedness in ecological networks](https://www.nature.com/articles/ncomms2422.pdf?origin=ppub)
+
+#### Your turn - nestedness
+
+Please calculate nestedness of plants and pollinators in the UW Medicinal garden using the `weighted NODF` index. How does this compare to the nestedness in the example hummingbird data? Which network do you think is more stable?
+
+```{r your turn nestedness}
+
+```
+
+### Robustness
+
+Robustness is a description of the ability of a network to withstand species loss. Imagine you remove a flower from the example network from class above. What would happen? If that flower is the only partner of an insect, then you would expect to have a secondary extinction, in which that insect also goes extinct as a result of losing its interaction partner. If lots of secondary extinctions happen when you lose species, then that network is not very robust to species loss. If you can lose a number of species without too many secondary extinctions, then you have a pretty robust network.
+
+As you can imagine in this scenario, the order in which species extinctions occur matters. Depending on your research question, you might be interested in what happens when the most generalist flower goes extinct first (so the one that is connected to the most insects). Or you might be interested in what happens when you lose the least abundant (rarest) insects first. Or perhaps you're interested in just what happens when you randomly lose species, or lose species in a particular order that you define. You can change these orders in a number of ways. 
+
+We're going to start with a random order because that is the order that is calculated by our `networklevel` function. If you want to look at a random extinction order, you can just call the two robustness estimates from that long list that we calculated earlier.
+
+```{r networklevel robustness}
+networklevel(hummingbird.comm, index = "robustness")
+```
+
+Here we get two different numbers. `robustness.HL` tells us the robustness to species losses occurring among the higher trophic level (whichever trophic level is represented by columns -- in this case, hummingbirds). As you can probably then guess, `robustness.LL` tells us the robustness to species losses among the lower trophic level.
+
+If we want to examine a specific robustness scenario, we'll want to take a couple of different steps to define our extinction orders and participants. Here, I use `second.extinct` to create three objects that specify a random order of secondary extinctions for the higher, lower, and both trophic levels. Then I run my robustness analysis using the `robustness` function on the objects that I created using `second.extinct`:
+
+```{r robustness}
+random.high <- second.extinct(hummingbird.comm, participant = "higher", method = "random")
+random.low <- second.extinct(hummingbird.comm, participant = "lower", method = "random")
+random.both <- second.extinct(hummingbird.comm, participant = "both", method = "random")
+
+robustness(random.high)
+robustness(random.low)
+robustness(random.both)
+```
+
+You might notice that these are close, but slightly different numbers than what we calculated using `networklevel`. That's not because this is any different. Instead, it's because this is a permutational test, so every time it calculates it will be slightly different.
+
+There are two other methods that you can use two calculate secondary extinctions in our `second.extinct` function. `method = abundance` removes the least abundant species first and moves upward in order of abundance, while `method = degree` removes the most generalist (most well-connected) species first and moves downward in order of generalization.
+
+Resource: [Tolerance of pollination networks to species
+extinctions](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1691904/pdf/15615687.pdf)
+
+#### Your turn - robustness to extinction
+
+Please try out the two other methods of calculating robustness to extinction (`method = abundance` and `method = degree`) using your UW Medicinal Garden network. After testing all of them, please write a few sentences explaining to me what the best and worst scenarios are in terms of species loss in this network and whether you think that result makes sense with your understanding of community ecology (think about the robustness exercise that you did in class a few weeks ago).
+
+```{r your turn robustness}
+# Abundance-based robustness
+
+# Degree-based robustness
+
+```
+
+## Network-level Specialization
+
+While there are many more network metrics than this, the last one that we will cover today is called `H2'` (H2-prime). This is a metric of network-level specialization. In other words, are species within this network more specialized than you would expect if they just randomly interacted with each other? The more species in a network are specialized, the higher the `H2'` number will be.
+
+```{r H2}
+networklevel(hummingbird.comm, index = "H2")
+```
+
+Resource: [Measuring specialization in species interaction networks](https://bmcecol.biomedcentral.com/articles/10.1186/1472-6785-6-9)
+
+#### Your turn - H2'
+
+Please calculate H2' for your UW Medicinal Garden network. Is this network more or less specialized than the example hummingbird network?
+
+```{r your turn H2}
+
+```
+
+
+
+## Species-level Metrics
+
+In addition to getting information about the entire network, we can also use `bipartite` to compare between species within a network. To do this, we can use the `specieslevel` function, which like `networklevel`, will give you far too many numbers to be useful. We will look at just one of them today:
+
+### Species-level Specialization
+
+We will use a metric called d' (d-prime) to calculate how specialized each species in this network is. In other words, does each species interact with a wide variety of partners or primarily have a single partner species? This metric accounts for both how many interactions a species takes part in an how evenly distributed those interactions are (so does a pollinator occasionally visit other flowers but has one favorite partner? Or does it seem to be an equal opportunity forager and just visits everything?). We can see that for both plants and pollinators by just specifying `index = "d"`:
+
+```{r dprime}
+specieslevel(hummingbird.comm, index = "d")
+```
+
+or we can look at just hummingbirds by specifying `level = "higher"` (or plants with `level = "lower"`):
+
+```{r dprime2}
+specieslevel(hummingbird.comm, index = "d", level = "higher")
+```
+
+### Your turn:
+
+Calculate d' for the UW Medicinal Garden network, looking at both trophic levels.
+
+```{r your turn dprime}
+
+```
+
+## Network Visualization
+
+There are two functions in `bipartite` that we can use to visualize networks, depending on what kind of network we want to see. Those two functions are `plotweb` and `visweb`, which you can see here:
+
+```{r network viz 1}
+plotweb(sortweb(hummingbird.comm), method = "normal")
+visweb(as.matrix(hummingbird.comm), labsize = 0.5)
+```
+
+In the first line, we are plotting a bipartite graph with the `plotweb` function. First, we sort the web into its most nested format using the `sortweb` function. Then we add the argument `method = "normal"` to tell it to plot the network in the way that it is sorted in the data (in order of number of interactions, using the `sortweb` function) rather than the default method (which tries to standardize the number of times the interactions cross, which isn't very biologically meaningful).
+
+In the second line, we plot the same network as a grid. Unlike `plotweb`, the `visweb` function automatically sorts the network into this nested format and plots it that way, so we don't have to add any additional arguments.
+
+Unfortunately, it's hard to see what's going on here with the labels, and the colors are pretty boring. Luckily, there are tons of other things that you can do to modify the appearance of this plot. I've included one version of this plot that I like to give you an example of how some of these arguments work.
+
+```{r network viz 2}
+plotweb(sortweb(hummingbird.comm), 
+        method = "normal", 
+        labsize = 1,
+        text.rot = 90, 
+        y.lim = c(-3, 4), 
+        col.interaction = "black", 
+        col.high = "maroon", 
+        col.low = "darkgreen")
+
+visweb(as.matrix(hummingbird.comm),
+       preynames = F,
+       labsize = 2)
+```
+
+### Your turn! Network visualization
+
+Please plot the plant-pollinator network from the UW Medicinal Garden, using both `plotweb` and `visweb`. Try out a couple of the different arguments (for instance, what would happen if you got rid of the `method = "normal"` in `plotweb`?). **Please include a few sentences below this code chunk describing how these visualization compare to the network metrics that you calculated above**. Do they seem consistent? Are there any surprises? 
+
+```{r your turn - network viz}
+
+```
+
+
+
+## Challenge: Fancy plots
+
+There are a couple of packages that you can use to create fancier network plots than those that are generated through `bipartite`. I will be honest and tell you that I haven't really explored them much. But, if you want to give them a try, here are some resources that you should be able to follow...see what happens!
+
+[ggnet](https://briatte.github.io/ggnet/)
+[ggbipart](https://pedroj.github.io/bipartite_plots/)
+
+```{r challenge plots}
+
+```
