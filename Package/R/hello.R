@@ -50,7 +50,7 @@ network <- function(d, alternative = "all", plot = TRUE) {
 
   cat("Robustness (high level): ", robust[1,2], "Robustness (low level): ", robust[2,2])
 
-  if (metric == "C") {
+  if (alternative == "connectedness") {
     conn <- bipartite::networklevel(d, index = "connectance")
     cat("Connectance: percent of the possible interactions (or node-to-node connections)
   that actually occur in the network."\n"Calculated by counting the total number
@@ -60,7 +60,7 @@ network <- function(d, alternative = "all", plot = TRUE) {
     cat("The connectance value for this network is ", conn)
   }
 
-  if (metric == "C") {
+  if (alternative == "nestedness") {
     networklevel(hummingbird.comm, index = "weighted NODF")
     cat("`weightedNODF`: nestedness, or the extent to which more specialized species
 interact with a subset of more generalized species. A high nestedness value
@@ -71,7 +71,7 @@ strength (how many times does that interaction occur).")
 
   }
 
-  if (metric == "C") {
+  if (alternative == "robustness") {
     cat("`robustness`: robustness of the network to removal of species, calculated in
   terms of removal of higher trophic level (HL) and lower trophic level (LL)
   species. This is calculated as the area under the curve, which means that a
@@ -83,7 +83,7 @@ strength (how many times does that interaction occur).")
 
   }
 
-  if (metric == "C") {
+  if (alternative == "specialization") {
       cat("Specialization (H'): robustness of the network to removal of species, calculated in
     terms of removal of higher trophic level (HL) and lower trophic level (LL)
     species. This is calculated as the area under the curve, which means that a
