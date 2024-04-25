@@ -24,15 +24,15 @@ You will likely need to install the package `bipartite` so I have that code comm
 library(tidyverse)
 library(bipartite)
 
-hummingbird.comm <- read.csv("hummingbirdmatrix.csv", header = T) %>%
+hummingbird.comm <- read.csv("EXAMPLE MATRIX_hummingbirdmatrix.csv", header = T) %>%
   column_to_rownames("X")
-uw.comm <- read.csv("medgarden.csv", header = T) %>%
-  group_by(plant, pollinator) %>%
-  summarise(count = sum(count)) %>%
-  pivot_wider(names_from = "pollinator",
-              values_from = "count",
-              values_fill = 0) %>%
-  column_to_rownames("plant")
+#uw.comm <- read.csv("medgarden.csv", header = T) %>%
+ # group_by(plant, pollinator) %>%
+  #summarise(count = sum(count)) %>%
+  #pivot_wider(names_from = "pollinator",
+   #           values_from = "count",
+    #          values_fill = 0) %>%
+#  column_to_rownames("plant")
 ```
 
 ## Data Cleaning
@@ -47,7 +47,7 @@ There are tons of different metrics that we can use to describe what is going on
 networklevel(hummingbird.comm)
 ```
 
-So many numbers. I'm going to focus on just a couple of them today, but these are pretty widely used terms in network analysis so if you are interested in them, you can find quite a bit of literature using these terms. You can also type `?networklevel` into your Console and scroll down to the "Value" section. 
+So many numbers. I'm going to focus on just a couple of them today, but these are pretty widely used terms in network analysis so if you are interested in them, you can find quite a bit of literature using these terms. You can also type `?networklevel` into your Console and scroll down to the "Value" section.
 
 <!-- * `connectance`: percent of the possible interactions that actually occur in the network, calculated as the number of cells with a value > 0 in the matrix divided by the total number of cells in the network (rows * columns). -->
 
@@ -71,8 +71,7 @@ sum(hummingbird.comm > 0)/(nrow(hummingbird.comm)*ncol(hummingbird.comm))
 
 Let's look at what this formula is doing. We're adding up how many interactions occur (have a number that's greater than 0 in the cell), and then dividing that number of actual interactions by the number of potential interactions (the total number of cells in this matrix).
 
-Resource: [Network structure and biodiversity loss in food webs:
-robustness increases with connectance](https://onlinelibrary.wiley.com/doi/pdf/10.1046/j.1461-0248.2002.00354.x)
+Resource: [Network structure and biodiversity loss in food webs: robustness increases with connectance](https://onlinelibrary.wiley.com/doi/pdf/10.1046/j.1461-0248.2002.00354.x)
 
 #### Your turn - connectance
 
@@ -81,7 +80,6 @@ Please calculate connectance for your UW Medicinal Garden (`uw.comm`).
 ```{r your turn connectance}
 
 ```
-
 
 ### Nestedness
 
@@ -109,7 +107,7 @@ Please calculate nestedness of plants and pollinators in the UW Medicinal garden
 
 Robustness is a description of the ability of a network to withstand species loss. Imagine you remove a flower from the example network from class above. What would happen? If that flower is the only partner of an insect, then you would expect to have a secondary extinction, in which that insect also goes extinct as a result of losing its interaction partner. If lots of secondary extinctions happen when you lose species, then that network is not very robust to species loss. If you can lose a number of species without too many secondary extinctions, then you have a pretty robust network.
 
-As you can imagine in this scenario, the order in which species extinctions occur matters. Depending on your research question, you might be interested in what happens when the most generalist flower goes extinct first (so the one that is connected to the most insects). Or you might be interested in what happens when you lose the least abundant (rarest) insects first. Or perhaps you're interested in just what happens when you randomly lose species, or lose species in a particular order that you define. You can change these orders in a number of ways. 
+As you can imagine in this scenario, the order in which species extinctions occur matters. Depending on your research question, you might be interested in what happens when the most generalist flower goes extinct first (so the one that is connected to the most insects). Or you might be interested in what happens when you lose the least abundant (rarest) insects first. Or perhaps you're interested in just what happens when you randomly lose species, or lose species in a particular order that you define. You can change these orders in a number of ways.
 
 We're going to start with a random order because that is the order that is calculated by our `networklevel` function. If you want to look at a random extinction order, you can just call the two robustness estimates from that long list that we calculated earlier.
 
@@ -135,8 +133,7 @@ You might notice that these are close, but slightly different numbers than what 
 
 There are two other methods that you can use two calculate secondary extinctions in our `second.extinct` function. `method = abundance` removes the least abundant species first and moves upward in order of abundance, while `method = degree` removes the most generalist (most well-connected) species first and moves downward in order of generalization.
 
-Resource: [Tolerance of pollination networks to species
-extinctions](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1691904/pdf/15615687.pdf)
+Resource: [Tolerance of pollination networks to species extinctions](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1691904/pdf/15615687.pdf)
 
 #### Your turn - robustness to extinction
 
@@ -166,8 +163,6 @@ Please calculate H2' for your UW Medicinal Garden network. Is this network more 
 ```{r your turn H2}
 
 ```
-
-
 
 ## Species-level Metrics
 
@@ -227,20 +222,17 @@ visweb(as.matrix(hummingbird.comm),
 
 ### Your turn! Network visualization
 
-Please plot the plant-pollinator network from the UW Medicinal Garden, using both `plotweb` and `visweb`. Try out a couple of the different arguments (for instance, what would happen if you got rid of the `method = "normal"` in `plotweb`?). **Please include a few sentences below this code chunk describing how these visualization compare to the network metrics that you calculated above**. Do they seem consistent? Are there any surprises? 
+Please plot the plant-pollinator network from the UW Medicinal Garden, using both `plotweb` and `visweb`. Try out a couple of the different arguments (for instance, what would happen if you got rid of the `method = "normal"` in `plotweb`?). **Please include a few sentences below this code chunk describing how these visualization compare to the network metrics that you calculated above**. Do they seem consistent? Are there any surprises?
 
 ```{r your turn - network viz}
 
 ```
 
-
-
 ## Challenge: Fancy plots
 
 There are a couple of packages that you can use to create fancier network plots than those that are generated through `bipartite`. I will be honest and tell you that I haven't really explored them much. But, if you want to give them a try, here are some resources that you should be able to follow...see what happens!
 
-[ggnet](https://briatte.github.io/ggnet/)
-[ggbipart](https://pedroj.github.io/bipartite_plots/)
+[ggnet](https://briatte.github.io/ggnet/) [ggbipart](https://pedroj.github.io/bipartite_plots/)
 
 ```{r challenge plots}
 
