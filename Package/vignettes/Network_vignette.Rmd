@@ -9,7 +9,7 @@ vignette: >
 ---
 
 ```{r setup}
-library(ADANetworks)
+#library(ADANetworks)
 ```
 
 ## Load libraries, you may need to install the package bipartite
@@ -17,7 +17,7 @@ library(ADANetworks)
 #install.packages("bipartite")
 library(tidyverse)
 library(bipartite)
-hummingbirds<- read.csv("EXAMPLE MATRIX_hummingbirdmatrix.csv", header = T) %>%
+hummingbirds<- read.csv("C:/Users/lb37426/Documents/ADA-Collab-Project/EXAMPLE MATRIX_hummingbirdmatrix.csv", header = T) %>%
   column_to_rownames("X")
 head(hummingbirds)
 ```
