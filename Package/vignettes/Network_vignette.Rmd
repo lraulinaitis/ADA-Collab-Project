@@ -1,0 +1,43 @@
+---
+title: "Network Analysis"
+Authours: Lili Benitez, Livia Raulinaitis, Sydney Jansen
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Network Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup}
+library(ADANetworks)
+```
+
+## Load libraries, you may need to install the package bipartite
+```{r load, message=FALSE, warning=FALSE}
+#install.packages("bipartite")
+library(tidyverse)
+library(bipartite)
+hummingbirds<- read.csv("EXAMPLE MATRIX_hummingbirdmatrix.csv", header = T) %>%
+  column_to_rownames("X")
+head(hummingbirds)
+```
+
+## Network Visualization: 
+Lets look first at what this network looks like: we can do this using a couple of different functions, `plotweb` and `visweb`
+```{r network visualization}
+plotweb(sortweb(hummingbirds))
+visweb(as.matrix(hummingbirds), labsize = 2)
+```
+
+## Calculating network metrics. We will first use bipartite to calculate all of the network metrics, and then go into depth for a few important metrics. 
+
+```{r all the metrics}
+networklevel(hummingbirds) #this may take a while to run
+```
+## Individual metrics: 
+We can also call individual metrics, by using the networklevel() function, and specifying the index. For example: 
+```{r connectance}
+networklevel(hummingbirds, index = "connectance")
+```
+
+
