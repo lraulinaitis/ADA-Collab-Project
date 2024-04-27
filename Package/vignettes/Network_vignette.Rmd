@@ -49,9 +49,10 @@ What does a connectance of 0.168 mean? It means that 16.8% of the total number o
 ```{r}
 networklevel(hummingbirds, index = "weighted NODF")
 ```
-### Modularity, or ....
+### Modularity, or when subgroups of species interactmore strongly with each over than with the rest of the network. Higher values indicate greater levels of modularity for the network. 
 ```{r}
 networklevel(hummingbirds, index = "modularity")
 ```
-Higher values indicate greater modularity for the network. 
+resource: https://doi-org.ezproxy.lib.utexas.edu/10.1016/B978-0-12-409548-9.10564-0
+
 
