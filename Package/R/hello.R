@@ -28,7 +28,14 @@ usethis::use_package("tibble")
 
 usethis::use_package_doc()
 
-# Function to shorten column names V2 ----
+
+
+example_data <- function(x) {
+  d <- read.csv("https://raw.githubusercontent.com/lraulinaitis/ADA-Collab-Project/main/EXAMPLE%20MATRIX_hummingbirdmatrix.csv?token=GHSAT0AAAAAACNJ5YXMLHROXXEAH4RZ6E26ZROQQTA")
+}
+
+#### TRASH CODE ####
+# Function to shorten column names V2
 shorten_column_name <- function(long_name) {
   # Split the long name by periods
   parts <- unlist(strsplit(long_name, "\\."))
@@ -65,6 +72,9 @@ d1<-d
 rownames(d) <- sapply(rownames(d), shorten_row_name)
 colnames(d) <- sapply(colnames(d), shorten_column_name)
 
+
+#### ACTUAL CODE ####
+
 network <- function(d, alternative = "all", plot = TRUE, weighted = FALSE) {
 
   # 1. read in matrix
@@ -73,8 +83,8 @@ network <- function(d, alternative = "all", plot = TRUE, weighted = FALSE) {
 
   # 2. produce visualization
 
-  plotweb(sortweb(d), method = "normal")
-  visweb(as.matrix(d), labsize = 0.5)
+  #plotweb(sortweb(d), method = "normal")
+  #visweb(as.matrix(d), labsize = 0.5)
 
   plotweb(sortweb(d),
           method = "normal",
@@ -113,7 +123,7 @@ network <- function(d, alternative = "all", plot = TRUE, weighted = FALSE) {
 
   # 4. produce network metrics
 
-  if (weighted == TRUE) {
+  #if (weighted == TRUE) {
     # not sure I'm actually going to follow this thru...
 
   if (alternative == "all") {
