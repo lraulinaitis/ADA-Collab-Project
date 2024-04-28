@@ -10,13 +10,11 @@ Description: The functions and materials included in this package are designed t
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-<<<<<<< HEAD
 Imports: 
     bipartite,
     tibble
-=======
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
->>>>>>> 3ba5692f08ffbb2739bbe09be6eadefa434fe7c7
+RoxygenNote: 7.3.1
