@@ -1,15 +1,22 @@
 Package: ADANetworks
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Materials and methods for network analysis. Created for Applied Data Analysis class, Spring 2024.
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Liliana Benitez, Livia Raulinaitis, Sydney Jansen
+Maintainer: Livia Raulinaitis <lraulinaitis@utexas.edu>
+Description: The functions and materials included in this package are designed to
+    give a brief introduction to the construction, quantification, and analysis
+    of ecological networks using the {bipartite} package. 
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+<<<<<<< HEAD
+Imports: 
+    bipartite,
+    tibble
+=======
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+>>>>>>> 3ba5692f08ffbb2739bbe09be6eadefa434fe7c7
