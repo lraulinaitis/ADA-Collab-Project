@@ -44,12 +44,12 @@ example_data <- function(x) {
 
   d <- read.csv("https://raw.githubusercontent.com/lraulinaitis/ADA-Collab-Project/main/hummingbirdmatrix.csv", header = T) |>
     tibble::column_to_rownames("Column1")
-  rownames(d) <- sapply(rownames(d1), shorten_row_name)
-  colnames(d) <- sapply(colnames(d1), shorten_column_name)
+  rownames(d) <- sapply(rownames(d), shorten_row_name)
+  colnames(d) <- sapply(colnames(d), shorten_column_name)
   return(d)
 }
 
-#d <- example_data()
+d <- example_data()
 
 #' @title Basic visualization & analysis network-level interaction webs
 #' @description Calculates five major network indices and visualizes network interactions
@@ -81,7 +81,7 @@ network <- function(d, alternative = "all", plot = TRUE, weighted = FALSE) {
           col.low = "darkgreen")
 
 
-  bipartite::visweb(as.matrix(d1),
+  bipartite::visweb(as.matrix(d),
          preynames = F,
          labsize = 2)
 
@@ -201,12 +201,6 @@ null_network <- function(d, alternative = "all", plot = TRUE) {
 
   if (alternative == "all") {
 
-    names <- c("Observed Matrix", "Null Matrix")
-
-    matrix <- base::data.frame(1,
-      row.names = names
-    )
-
     matrix <- matrix(NA, nrow = 2, ncol = 0)
     rownames(matrix) <- c("Observed Matrix", "Null Matrix")
 
@@ -226,7 +220,7 @@ null_network <- function(d, alternative = "all", plot = TRUE) {
     Robustness <- c(robust, robust_null)
     Specialization <- c(spec, spec_null)
     Nestedness <- c(nest, nest_null)
-    Modularity <- c(mod, mod_null)
+
 
     matrix <- cbind(matrix, Connectance, Robustness, Nestedness, Specialization)
 

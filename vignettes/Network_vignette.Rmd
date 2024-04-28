@@ -9,12 +9,12 @@ vignette: >
 ---
 
 ## Package description: 
-### Our package uses an example network of hummingbirds and flowers they visited to explore different metrics in network ecology, looping in the package bipartite. Here, you will be able to use the functions `network()` and `___`,  to visualize the example dataset and calculate Connectance, Nestednes, Robustness, Modularity, and Network-Level-Specilization for this network and interprete their meanings. 
+### Our package uses an example network of hummingbirds and flowers they visited to explore different metrics in network ecology, looping in the package bipartite. Here, you will be able to use the functions `network()` and `___`,  to visualize the example dataset and calculate Connectance, Nestednes, Robustness, Modularity, and Network-Level-Specilization for this network and interprete their meanings. Then we also generate a null network to compare differences between our network and a fuly random one, using `null_network()`
 resources: https://doi-org.ezproxy.lib.utexas.edu/10.1016/B978-0-12-409548-9.10564-0, https://www-sciencedirect-com.ezproxy.lib.utexas.edu/science/article/pii/S1439179107000576 https://esajournals-onlinelibrary-wiley-com.ezproxy.lib.utexas.edu/doi/full/10.1890/07-2121.1
 ```{r setup}
 library(bipartite)
-#library(ADANetworks)
-#example_data()
+library(ADANetworks)
+d<-example_data()
 ```
 
 ## We can use the function `network()` to run a quick visualization of our network and calculate four metrics: 
@@ -29,25 +29,25 @@ library(bipartite)
 - Modularity: or when subgroups of species interact more strongly with each over than with the rest of the network. Higher values indicate greater levels of modularity for the network. 
 
 ```{r }
-#network(d, alternative = "all")
+network(d)
 ```
 ## We can also specify which of these metrics we want, by specifying the "alternative=". Options are: "connectedness", "nestedness", "robustness", "specialization", and "modularity"
 ```{r}
-#network(d, alternative = "connectedness")
+network(d, alternative = "connectedness")
 ```
 What does a connectance of 0.168 mean? It means that 16.8% of the total number of interactions are present in this network. 
 
 ### Nestedness
 ```{r}
-#network(d, alternative = "nestedness")
+network(d, alternative = "nestedness")
 ```
 ### Robustness
 ```{r}
-#network(d, alternative = "robustness")
+network(d, alternative = "robustness")
 ```
 ### Specialization
 ```{r}
-#network(d, alternative = "specialization")
+network(d, alternative = "specialization")
 ```
 ### Modularity
 ```{r}
