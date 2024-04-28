@@ -17,4 +17,8 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+<<<<<<< HEAD
 RoxygenNote: 7.3.1
+=======
+
+>>>>>>> 4de05b536fb99e05ecf737638bcac4caf5b502e4
