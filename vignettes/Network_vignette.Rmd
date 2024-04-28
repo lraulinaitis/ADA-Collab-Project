@@ -8,51 +8,59 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
+## Package description: 
+### Our package uses an example network of hummingbirds and flowers they visited to explore different metrics in network ecology, looping in the package bipartite. Here, you will be able to use the functions `network()` and `null_network()`,  to visualize the example dataset and calculate Connectance, Nestednes, Robustness, Modularity, and Network-Level-Specilization for this network and interprete their meanings. Then we also generate a null network to compare differences between our network and a fuly random one. 
+resources: https://doi-org.ezproxy.lib.utexas.edu/10.1016/B978-0-12-409548-9.10564-0, https://www-sciencedirect-com.ezproxy.lib.utexas.edu/science/article/pii/S1439179107000576 https://esajournals-onlinelibrary-wiley-com.ezproxy.lib.utexas.edu/doi/full/10.1890/07-2121.1
 ```{r setup}
-#library(ADANetworks)
-```
-
-## Load libraries, you may need to install the package bipartite
-```{r load, message=FALSE, warning=FALSE}
-#install.packages("bipartite")
-library(tidyverse)
+library(knitr)
 library(bipartite)
-hummingbirds<- read.csv("C:/Users/lb37426/Documents/ADA-Collab-Project/EXAMPLE MATRIX_hummingbirdmatrix.csv", header = T) %>%
-  column_to_rownames("X")
-head(hummingbirds)
+library(ADANetworks)
+d<-example_data()
 ```
 
-## Network Visualization: 
-Lets look first at what this network looks like: we can do this using a couple of different functions, `plotweb` and `visweb`. The output is a network of lines connecting interacting hummingbird and plant species. 
-```{r network visualization}
-plotweb(sortweb(hummingbirds),  arrow="both", y.width.low=0.05, labsize=.7, text.rot=90, col.high="blue", 
-	col.low="darkgreen")
-visweb(as.matrix(hummingbirds), labsize = 1)
+## We can use the function `network()` to run a quick visualization of our network and calculate four metrics: 
+- Connectance: percent of the possible interactions (node-to-node links) that actually occur in the network. Calculated as the total number of non-zero matrix cells divided by the total matrix cells.
+- Nestedness, or how well the data forms into subsets of larger groups. Higher values indicate higher nestedness. 
+  "High nestedness indicates that level A specialists interact primarily with level B generalists (or v.v.).", '\n',
+  "This indicates a non-random network structure.", '\n',
+  "Low nestedness indicates that level A specialists interact randomly with level B indiscriminately (or v.v.).", '\n',
+  "This indicates a random network structure."
+- Robustness: vulnerability of the network level to secondary extinction events when one species is removed from the network. Calculated as the integral of the network curve.", '\n',
+                  "HL: higher trophic level", '\n', "LL: lower trophic level", '\n',
+                  "0 = Network is completely vulnerable to extinction events", '\n',
+                  "1 = Network is completely resilient to extinction events
+- Network-Level Specialization (H2'): The extent of interaction specialization within the network. Specialists are those species that interact with one or very few other species.", '\n',
+                     "0 = Network is absent of specialists", '\n',
+                     "1 = Network is entirely composed of specialists"
+- Modularity: or when subgroups of species interact more strongly with each over than with the rest of the network. Higher values indicate greater levels of modularity for the network. 
+
+```{r, full network}
+net<-network(d)
+```
+## We can also specify which of these metrics we want, by specifying the "alternative=". Options are: "connectance", "nestedness", "robustness", "specialization", and "modularity"
+```{r, connectance}
+network(d, alternative = "connectance", plot=FALSE)
 ```
 
-## Calculating network metrics. 
-Now that we have visualized the network, we can try to calculate some metrics that will tell us a bit about the interactions we are seeing. We will first use bipartite to calculate all of the network metrics, and then go into depth for a few important metrics. 
 
-```{r all the metrics}
-networklevel(hummingbirds) #this may take a while to run
+### Nestedness
+```{r, nestedness}
+#network(d, alternative = "nestedness", plot=FALSE)
 ```
-## Individual metrics: We can also call individual metrics, by using the networklevel() function, and specifying the index. For example
- 
-### Connectance, or the number of realized interactions over the number of potential interactions in the system. 
-```{r connectance}
-networklevel(hummingbirds, index = "connectance")
+### Robustness
+```{r, robustness}
+network(d, alternative = "robustness", plot=FALSE)
 ```
-What does a connectance of 0.168 mean? It means that 16.8% of the total number of interactions are present in this network. 
-
-### Nestedness, or how well the data forms into subsets of larger groups. We can use `weighted NODF`, which weights the interaction by how frequently we see it occur in the network. Higher values indicate higher nestedness. 
-
-```{r}
-networklevel(hummingbirds, index = "weighted NODF")
+### Specialization
+```{r, specialization}
+network(d, alternative = "specialization", plot=FALSE)
 ```
-### Modularity, or when subgroups of species interactmore strongly with each over than with the rest of the network. Higher values indicate greater levels of modularity for the network. 
-```{r}
-networklevel(hummingbirds, index = "modularity")
+### Modularity
+```{r, modularity}
+network(d, alternative = "modularity", plot=FALSE)
 ```
-resource: https://doi-org.ezproxy.lib.utexas.edu/10.1016/B978-0-12-409548-9.10564-0
-
-
+## Now lets look at the random network and compare ours, using our `null_network` function
+```{r, null}
+null_network(d)
+```
+It seems like our observed network, there is lower connectance, lower robustness in the lower trophic level (plants), and greater specialization and modularity than the null network. 
