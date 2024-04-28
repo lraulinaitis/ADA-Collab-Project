@@ -10,3 +10,6 @@ Description: The functions and materials included in this package are designed t
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Imports: 
+    bipartite,
+    tibble
