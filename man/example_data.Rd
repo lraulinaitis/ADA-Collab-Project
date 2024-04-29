@@ -4,7 +4,10 @@
 \alias{example_data}
 \title{Import example interaction matrix}
 \arguments{
-\item{abbrev_names}{abbreviates names for clearer display in network plots, defaults to FALSE}
+\item{x}{matrix of plant-bird interactions}
+
+\item{abbrev_names}{abbreviates names for clearer display in network plots, defaults to FALSE
+example_data(x=NULL, abrev_names= FALSE)}
 }
 \description{
 Imports a matrix of plant-bird interactions that can be saved to the user environment
