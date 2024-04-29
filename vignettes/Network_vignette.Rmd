@@ -2,6 +2,8 @@
 title: "Network Analysis"
 Authours: Lili Benitez, Livia Raulinaitis, Sydney Jansen
 output: rmarkdown::html_vignette
+fig_width: 12
+fig_height: 8
 vignette: >
   %\VignetteIndexEntry{Network Analysis}
   %\VignetteEngine{knitr::rmarkdown}
@@ -37,8 +39,8 @@ d<-example_data(abbrev_names=TRUE)
                      "1 = Network is entirely composed of specialists"
 - Modularity: or when subgroups of species interact more strongly with each over than with the rest of the network. Higher values indicate greater levels of modularity for the network. 
 
-```{r, full network}
-net<-network(d)
+```{r,full network, fig.width=10, fig.height=10}
+network(d)
 ```
 
 ## We can also specify which of these metrics we want, by specifying the "alternative=". Options are: "connectance", "nestedness", "robustness", "specialization", and "modularity"
@@ -64,7 +66,7 @@ network(d, alternative = "specialization", plot=FALSE)
 network(d, alternative = "modularity", plot=FALSE)
 ```
 ## Now lets look at the random network and compare ours, using our `null_network` function
-```{r, null}
+```{r, null, fig.width=10, fig.height=10}
 null_network(d)
 ```
 #### It seems like our observed network, there is lower connectance, lower robustness in the lower trophic level (plants), and greater specialization and modularity than the null network. 
