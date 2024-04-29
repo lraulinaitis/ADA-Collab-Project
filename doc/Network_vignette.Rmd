@@ -44,6 +44,8 @@ network(d)
 ```
 
 ## We can also specify which of these metrics we want, by specifying the `alternative=`. Options are: "connectance", "nestedness", "robustness", "specialization", and "modularity". Additionally, we can opt to not print the network visualization, by writing `plot=FALSE`
+
+### Connectance
 ```{r, connectance}
 network(d, alternative = "connectance", plot=FALSE)
 ```
