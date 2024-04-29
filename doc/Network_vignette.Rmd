@@ -1,0 +1,72 @@
+---
+title: "Network Analysis"
+Authours: Lili Benitez, Livia Raulinaitis, Sydney Jansen
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Network Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Our package uses an example network of hummingbirds and flowers they visited to explore different metrics in network ecology, looping in the package bipartite. Here, you will be able to use the functions `network()` and `null_network()`,  to visualize the example dataset and calculate Connectance, Nestednes, Robustness, Modularity, and Network-Level-Specilization for this network and interprete their meanings. Then we also generate a null network to compare differences between our network and a fuly random one. 
+
+### Resources:
+Bipartite package description: https://cran.r-project.org/web/packages/bipartite/bipartite.pdf
+Various papers on network metrics: 
+https://doi-org.ezproxy.lib.utexas.edu/10.1016/B978-0-12-409548-9.10564-0, https://www-sciencedirect-com.ezproxy.lib.utexas.edu/science/article/pii/S1439179107000576 https://esajournals-onlinelibrary-wiley-com.ezproxy.lib.utexas.edu/doi/full/10.1890/07-2121.1
+
+
+### First we will load in our package and data using the `example_data()` function. Here, we specify to abbrev_names which will make the figure a little easier to read
+```{r setup}
+library(ADANetworks)
+d<-example_data(abbrev_names=TRUE)
+```
+
+## We can use the function `network()` to run a quick visualization of our network and calculate four metrics: 
+- Connectance: percent of the possible interactions (node-to-node links) that actually occur in the network. Calculated as the total number of non-zero matrix cells divided by the total matrix cells.
+- Nestedness, or how well the data forms into subsets of larger groups. Higher values indicate higher nestedness. 
+  "High nestedness indicates that level A specialists interact primarily with level B generalists (or v.v.).", '\n',
+  "This indicates a non-random network structure.", '\n',
+  "Low nestedness indicates that level A specialists interact randomly with level B indiscriminately (or v.v.).", '\n',
+  "This indicates a random network structure."
+- Robustness: vulnerability of the network level to secondary extinction events when one species is removed from the network. Calculated as the integral of the network curve.", '\n',
+                  "HL: higher trophic level", '\n', "LL: lower trophic level", '\n',
+                  "0 = Network is completely vulnerable to extinction events", '\n',
+                  "1 = Network is completely resilient to extinction events
+- Network-Level Specialization (H2'): The extent of interaction specialization within the network. Specialists are those species that interact with one or very few other species.", '\n',
+                     "0 = Network is absent of specialists", '\n',
+                     "1 = Network is entirely composed of specialists"
+- Modularity: or when subgroups of species interact more strongly with each over than with the rest of the network. Higher values indicate greater levels of modularity for the network. 
+
+```{r,full network, fig.width=10, fig.height=10}
+network(d)
+```
+
+## We can also specify which of these metrics we want, by specifying the "alternative=". Options are: "connectance", "nestedness", "robustness", "specialization", and "modularity"
+```{r, connectance}
+network(d, alternative = "connectance", plot=FALSE)
+```
+
+
+### Nestedness
+```{r, nestedness}
+network(d, alternative = "nestedness", plot=FALSE)
+```
+### Robustness
+```{r, robustness}
+network(d, alternative = "robustness", plot=FALSE)
+```
+### Specialization
+```{r, specialization}
+network(d, alternative = "specialization", plot=FALSE)
+```
+### Modularity
+```{r, modularity}
+network(d, alternative = "modularity", plot=FALSE)
+```
+## Now lets look at the random network and compare ours, using our `null_network` function
+```{r, null, fig.width=10, fig.height=10}
+null_network(d)
+```
+#### It seems like our observed network, there is lower connectance, lower robustness in the lower trophic level (plants), and greater specialization and modularity than the null network. 
+
