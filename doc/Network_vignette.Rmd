@@ -8,7 +8,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-## Our package uses an example network of hummingbirds and flowers they visited to explore different metrics in network ecology, looping in the package bipartite. Here, you will be able to use the functions `network()` and `null_network()`,  to visualize the example dataset and calculate Connectance, Nestednes, Robustness, Modularity, and Network-Level-Specilization for this network and interprete their meanings. Then we also generate a null network to compare differences between our network and a fully random one. 
+## Our package uses an example network of hummingbirds and flowers they visited to explore different metrics in network ecology, looping in the package bipartite. Here, you will be able to use the functions `network()` and `null_network()`,  to visualize the example dataset and calculate Connectance, Nestednes, Robustness, Modularity, and Network-Level-Specialization for this network and interpret their meanings. Then we also generate a null network to compare differences between our network and a fully random one. 
 
 ### Resources:
 Bipartite package description: https://cran.r-project.org/web/packages/bipartite/bipartite.pdf
