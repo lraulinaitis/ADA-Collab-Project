@@ -5,7 +5,6 @@
 #' @description Imports a matrix of plant-bird interactions that can be saved to the user environment
 #' @param x matrix of plant-bird interactions
 #' @param abbrev_names abbreviates names for clearer display in network plots, defaults to FALSE
-#' @examples
 #' example_data(x=NULL, abrev_names= FALSE)
 usethis::use_package("tibble")
 
@@ -96,7 +95,7 @@ network <- function(d, alternative = "all", plot = TRUE) {
 
   if (alternative == "nestedness") {
     nested <- bipartite::networklevel(d, index = "NODF") # doesn't work yet
-    cat("The interactions of this network have a nestedness index of", nest[1])
+    cat("The interactions of this network have a nestedness index of", nested[1])
   }
 
   if (alternative == "robustness") {
