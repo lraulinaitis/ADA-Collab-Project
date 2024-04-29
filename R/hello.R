@@ -3,8 +3,9 @@
 #' @name example_data
 #' @title Import example interaction matrix
 #' @description Imports a matrix of plant-bird interactions that can be saved to the user environment
+#' @param x matrix of plant-bird interactions
 #' @param abbrev_names abbreviates names for clearer display in network plots, defaults to FALSE
-
+#' example_data(x=NULL, abrev_names= FALSE)
 usethis::use_package("tibble")
 
 example_data <- function(x, abbrev_names = FALSE) {
