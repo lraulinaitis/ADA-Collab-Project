@@ -5,6 +5,7 @@
 #' @description Imports a matrix of plant-bird interactions that can be saved to the user environment
 #' @param x matrix of plant-bird interactions
 #' @param abbrev_names abbreviates names for clearer display in network plots, defaults to FALSE
+#' @examples
 #' example_data(x=NULL, abrev_names= FALSE)
 usethis::use_package("tibble")
 
@@ -60,13 +61,15 @@ network <- function(d, alternative = "all", plot = TRUE) {
   if (plot == TRUE) {
   bipartite::plotweb(bipartite::sortweb(d),
           method = "normal",
-          labsize = .75,
+          labsize = 1.75,
           text.rot = 90,
           y.lim = c(-3, 4),
           col.interaction = "black",
           col.high = "maroon",
           col.low = "darkgreen")
-  }
+
+}
+
 
   if (alternative == "all") {
 
