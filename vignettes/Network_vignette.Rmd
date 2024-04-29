@@ -13,11 +13,11 @@ vignette: >
 ## Our package uses an example network of hummingbirds and flowers they visited to explore different metrics in network ecology, looping in the package bipartite. Here, you will be able to use the functions `network()` and `null_network()`,  to visualize the example dataset and calculate Connectance, Nestednes, Robustness, Modularity, and Network-Level-Specilization for this network and interprete their meanings. Then we also generate a null network to compare differences between our network and a fuly random one. 
 ### resources:
 Bipartite package description: https://cran.r-project.org/web/packages/bipartite/bipartite.pdf
-papers on network metrics: 
+Various papers on network metrics: 
 https://doi-org.ezproxy.lib.utexas.edu/10.1016/B978-0-12-409548-9.10564-0, https://www-sciencedirect-com.ezproxy.lib.utexas.edu/science/article/pii/S1439179107000576 https://esajournals-onlinelibrary-wiley-com.ezproxy.lib.utexas.edu/doi/full/10.1890/07-2121.1
 
 
-#First we will load in our package and data using the `example_data()` function. Here, we specify to abbrev_names which will make the figure a little easier to read
+# First we will load in our package and data using the `example_data()` function. Here, we specify to abbrev_names which will make the figure a little easier to read
 ```{r setup}
 library(ADANetworks)
 d<-example_data(abbrev_names=TRUE)
