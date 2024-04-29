@@ -6,9 +6,11 @@
 \arguments{
 \item{x}{matrix of plant-bird interactions}
 
-\item{abbrev_names}{abbreviates names for clearer display in network plots, defaults to FALSE
-example_data(x=NULL, abrev_names= FALSE)}
+\item{abbrev_names}{abbreviates names for clearer display in network plots, defaults to FALSE}
 }
 \description{
 Imports a matrix of plant-bird interactions that can be saved to the user environment
+}
+\examples{
+example_data(abbrev_names=TRUE)
 }

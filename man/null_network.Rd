@@ -17,6 +17,6 @@ null_network(d, alternative = "all", plot = TRUE)
 Generates, analyzes, and visualizes a random (null-model) matrix based on the number of higher- and lower-level species and the average number of node-to-node links in the original matrix.
 }
 \examples{
-null_network(d = NULL, alternative = "all", plot = TRUE)
+null_network(d = d, alternative = "all", plot = TRUE)
 }
 \keyword{networks}

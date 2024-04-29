@@ -5,7 +5,8 @@
 #' @description Imports a matrix of plant-bird interactions that can be saved to the user environment
 #' @param x matrix of plant-bird interactions
 #' @param abbrev_names abbreviates names for clearer display in network plots, defaults to FALSE
-#' example_data(x=NULL, abrev_names= FALSE)
+#' @examples
+#' example_data(abbrev_names=TRUE)
 usethis::use_package("tibble")
 
 example_data <- function(x, abbrev_names = FALSE) {
@@ -51,7 +52,7 @@ example_data <- function(x, abbrev_names = FALSE) {
 #' @keywords networks
 #' @export
 #' @examples
-#' network(d = NULL, alternative = "all", plot = TRUE)
+#' network(d =d, alternative = "all", plot = TRUE)
 
 usethis::use_package("bipartite")
 
@@ -123,7 +124,7 @@ network <- function(d, alternative = "all", plot = TRUE) {
 #' @param plot produce network visualization, defaults to TRUE
 #' @keywords networks
 #' @examples
-#' null_network(d = NULL, alternative = "all", plot = TRUE)
+#' null_network(d = d, alternative = "all", plot = TRUE)
 
 null_network <- function(d, alternative = "all", plot = TRUE) {
 

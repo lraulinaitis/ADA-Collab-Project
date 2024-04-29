@@ -14,6 +14,6 @@
 Calculates five major network indices and visualizes network interactions.
 }
 \examples{
-network(d = NULL, alternative = "all", plot = TRUE)
+network(d =d, alternative = "all", plot = TRUE)
 }
 \keyword{networks}
