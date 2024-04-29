@@ -8,7 +8,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-## Our package uses an example network of hummingbirds and flowers they visited to explore different metrics in network ecology, looping in the package bipartite. Here, you will be able to use the functions `network()` and `null_network()`,  to visualize the example dataset and calculate Connectance, Nestednes, Robustness, Modularity, and Network-Level-Specilization for this network and interprete their meanings. Then we also generate a null network to compare differences between our network and a fuly random one. 
+## Our package uses an example network of hummingbirds and flowers they visited to explore different metrics in network ecology, looping in the package bipartite. Here, you will be able to use the functions `network()` and `null_network()`,  to visualize the example dataset and calculate Connectance, Nestednes, Robustness, Modularity, and Network-Level-Specilization for this network and interprete their meanings. Then we also generate a null network to compare differences between our network and a fully random one. 
 
 ### Resources:
 Bipartite package description: https://cran.r-project.org/web/packages/bipartite/bipartite.pdf
@@ -20,9 +20,10 @@ https://doi-org.ezproxy.lib.utexas.edu/10.1016/B978-0-12-409548-9.10564-0, https
 ```{r setup}
 library(ADANetworks)
 d<-example_data(abbrev_names=TRUE)
+head(d)
 ```
 
-## We can use the function `network()` to run a quick visualization of our network and calculate four metrics: 
+## We can use the function `network()` to run a quick visualization of our network and calculate five metrics: 
 - Connectance: percent of the possible interactions (node-to-node links) that actually occur in the network. Calculated as the total number of non-zero matrix cells divided by the total matrix cells.
 - Nestedness, or how well the data forms into subsets of larger groups. Higher values indicate higher nestedness. 
   "High nestedness indicates that level A specialists interact primarily with level B generalists (or v.v.).", '\n',
@@ -42,7 +43,7 @@ d<-example_data(abbrev_names=TRUE)
 network(d)
 ```
 
-## We can also specify which of these metrics we want, by specifying the "alternative=". Options are: "connectance", "nestedness", "robustness", "specialization", and "modularity"
+## We can also specify which of these metrics we want, by specifying the `alternative=`. Options are: "connectance", "nestedness", "robustness", "specialization", and "modularity". Additionally, we can opt to not print the network visualization, by writing `plot=FALSE`
 ```{r, connectance}
 network(d, alternative = "connectance", plot=FALSE)
 ```

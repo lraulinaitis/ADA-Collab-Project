@@ -1,6 +1,7 @@
 ## ----setup--------------------------------------------------------------------
 library(ADANetworks)
 d<-example_data(abbrev_names=TRUE)
+head(d)
 
 ## ----full network, fig.width=10, fig.height=10--------------------------------
 network(d)
